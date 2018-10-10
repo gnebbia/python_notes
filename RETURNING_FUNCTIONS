@@ -1,0 +1,29 @@
+class Robot:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+
+
+def move(dx, dy):
+    def stepper(u):
+        u.x += dx
+        u.y += dy
+    return stepper
+
+
+def left(dx):
+    return move(-dx, 0)
+
+def up(dy):
+    return move(0, -dy)
+
+def right(dx):
+    return move(dx, 0)
+
+def down(dy):
+    return move(0, dy)
+
+
+r = Robot()
+left(3)(r)
+print(r.x, r.y)  # (-3, 0)

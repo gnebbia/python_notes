@@ -8,4 +8,5 @@ Table of Contents
 * [3 cli argument parsing](sections/arguments.md)
 * [4 testing](sections/testing.md)
 * [5 design patterns](sections/design_patterns.md)
+* [A snippets](snippets/)
 

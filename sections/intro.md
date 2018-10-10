@@ -22,6 +22,8 @@ In order to plot stuff with matplotlib we can do:
 ```python
 %pylab
 ```
+or simply import matlab as usual, knowing that plots will be shown only when we
+execute the show() function.
 
 
 ### Basic Data Structures
@@ -55,6 +57,7 @@ def optimize(w, b, X, Y):
     params -- dictionary containing the weights w and bias b
     grads -- dictionary containing the gradients of the weights and bias with respect to the cost function
     costs -- list of all the costs computed during the optimization, this will be used to plot the learning curve.
+    """
 
     ### INSERT CODE HERE ### 
 
@@ -63,6 +66,7 @@ def optimize(w, b, X, Y):
 
 
 ### Script Template
+
 
 ### Organizing Projects
 
