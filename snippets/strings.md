@@ -38,3 +38,10 @@ print(r"ciao\n example string\b")
 
 The 'r' modifier is particularly useful when we use regexes, it is always a good
 idea to insert the 'r' modifier before a regex expression.
+
+When describing string it is a good idea to put placeholders in this manner:
+```python
+var1 = 'ciao'
+var2 = 'arrivederci'
+'my string {} and {}'.format(var1, var2)
+```

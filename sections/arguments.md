@@ -25,6 +25,8 @@ arguments, but this is another story.
 
 Let's see a very general example of snippet using argparse:
 ```python
+import argparse 
+
 
 parser = argparse.ArgumentParser(description='Optional app description', prog='myprog', allow_abbrev=False)
 # here we give the program description, the program name
@@ -155,20 +157,109 @@ print(args.steekatz)
 ```
 
 
-### Dealing with choices and rages
+### Typees of parameters
+
+We can have different types of parameters and options we may want for our
+program, let's see some examples.
+
+#### Boolean Options
+
+We may want boolean options, so options which are either set or not set, and
+this can be done in this way:
 
 ```python
-# in this case we constraint an integer value
+# in this case we insert two boolean options
+parser.add_argument(
+    "-v","--verbose",
+    dest='is_verbose',
+    action='store_true',
+    help="Enables verbose mode
+    default=False,
+    )
+
+parser.add_argument(
+    "-s","--strict",
+    dest='is_strict',
+    action='store_true',
+    help="Enables strict mode, where only proper (and not also related)\
+    subdomains will be saved",
+    default=False,
+    )
+```
+
+### Lists
+
+Here we show how to add an argument which can get multiple values:
+
+```python
+parser.add_argument(
+    "websites",
+    help="Specify a website",
+    default=[],
+    type=str,
+    nargs='+',
+    )
+```
+
+So from the command line we can specify something like:
+```sh
+python myprogram.py website1.com website2.com website3.com 
+```
+
+In the last case we specified an argument which could get multiple values, the
+following example will instead show an example where we have an option which can
+be specified multiple times:
+```python
+parser.add_argument(
+    "-w", "--wordlist",
+    action='append',
+    help="input wordlist used for fuzzing",
+    default=[],
+    type=str,
+    nargs='+',
+    )
+```
+in this way we can specify from the command line something like this:
+```sh
+python myprogram.py --wordlist value1 --wordlist value2 --wordlist value3
+```
+
+### Files
+
+Let's see how to specify a file as an option:
+```python
+parser.add_argument(
+    "-o","--output",
+    dest='outputfile',
+    help="Save results to standard output",
+    default=None,
+    nargs='?',
+    type=argparse.FileType('w'),
+    )
+```
+
+In this case the file is optional as can be seen in `nargs=?`, we can write to
+the file later in the program by doing:
+```python
+if args.outputfile is not None:
+    args.outputfile.write('\n'.join(subdomains))
+```
+
+#### Ranges and Choices
+
+
+In this case we have a constraint on the integer parameter:
+```python
 parser = argparse.ArgumentParser(prog='PROG')
 parser.add_argument('foo', type=int, choices=range(5, 10))
 ```
 
 
+In this case we have a constraint on a string parameter:
 ```python
 parser = argparse.ArgumentParser(prog='game.py')
 parser.add_argument('move', choices=['rock', 'paper', 'scissors'])
 parser.parse_args(['rock'])
 ```
-
 
 
