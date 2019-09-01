@@ -1,3 +1,26 @@
+In general in python we can make concurrency in many ways, but the most common
+ones are:
+- async (if we are designing something from scratch which can be I/O bound)
+- threading (if we are using something which is not async but want to run
+  concurrently (such as requests or other blocking libraries) and we still are
+  in an I/O bound situation
+- multiprocessing if we have a CPU-bound task to divide among multiple processes
+
+
+In order to work with threading it is suggested to use concurrent.features and
+not threading which is not that easy.
+In order to work with async it is suggested to use trio (the stdlibrary module
+is asyncio but it makes error handling more difficult and less flexible)
+
+We can use threading (or better concurrent.features) with asyncio if we have an asyncio 
+loop running and we want to add to the loop some sync task with threading.
+Notice that this approach is good everytime we have to schedule a mix of tasks
+which are both async and sync.
+
+If we only have async tasks we can just use trio.
+
+
 https://realpython.com/python-concurrency/
 https://realpython.com/async-io-python/#the-10000-foot-view-of-async-io
+https://www.youtube.com/watch?v=2ZwuKeL0aHs&list=PLGKQkV4guDKEv1DoK4LYdo2ZPLo6cyLbm&index=1
 
