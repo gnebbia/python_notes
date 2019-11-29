@@ -157,7 +157,7 @@ print(args.steekatz)
 ```
 
 
-### Typees of parameters
+### Types of parameters
 
 We can have different types of parameters and options we may want for our
 program, let's see some examples.
@@ -173,7 +173,7 @@ parser.add_argument(
     "-v","--verbose",
     dest='is_verbose',
     action='store_true',
-    help="Enables verbose mode
+    help="Enables verbose mode",
     default=False,
     )
 
