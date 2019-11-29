@@ -1,0 +1,4 @@
+import json
+
+# print a sample nicely to check out how it is
+print(json.dumps(cve_dict['CVE_Items'][0], sort_keys=True, indent=4, separators=(',', ': ')))
