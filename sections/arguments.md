@@ -1,7 +1,7 @@
 # Command Line Parameters Parsing
 
 From python documentation we can read:
-*Parameters starting with - or -- are usually considered optional. 
+- Parameters starting with - or -- are usually considered optional. 
 All other parameters are positional parameters and as such 
 required by design (like positional function arguments). 
 It is possible to require optional arguments, but this is a bit 
