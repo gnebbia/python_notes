@@ -133,6 +133,19 @@ print(args.f2)
 parser.print_help()
 ```
 
+### Types of arguments
+
+```python
+parser.add_argument('-i', type=int)
+parser.add_argument('-f', type=float)
+parser.add_argument('--file', type=file)
+```
+We can have also more complicated things for files, such as:
+```python
+parser.add_argument('-i', metavar='in-file',  type=argparse.FileType('rt'))
+parser.add_argument('-o', metavar='out-file', type=argparse.FileType('wt'))
+# Note that metavar is just the name of the argument/option in the help message
+```
 
 ### Changing names of the parameter variables
 
@@ -262,4 +275,184 @@ parser.add_argument('move', choices=['rock', 'paper', 'scissors'])
 parser.parse_args(['rock'])
 ```
 
+## Complex Parsers
 
+By complex parsers I mean, parsers which accept subcommands with their
+own flags.
+
+For example we may build programs which as a first argument get a command
+and their following arguments are indications for that command.
+An example program may be:
+
+    mycmd add --option1 flag1 --option2 blabla
+    mycmd update --option1 flag1 --option2 blabla
+    mycmd delete --option1 flag1 --option2 blabla
+
+To implement such programs we may build parsers as explicited here:
+
+```python
+import argparse
+
+def parse_args(args):
+    """
+    This function parses the arguments which have been passed from the command
+    line, these can be easily retrieved for example by using "sys.argv[1:]".
+    It returns a parser object as with argparse.
+
+    Arguments:
+    args -- the list of arguments passed from the command line as the sys.argv
+            format
+
+    Returns: a parser with the provided arguments, which can be used in a
+            simpler format
+    """
+    parser = argparse.ArgumentParser(prog='exampleap',
+                                     description='INSERT TAGLINE HERE.™')
+
+    
+    subparsers = parser.add_subparsers(help='commands', dest="command")
+
+    # ACTIONS
+    # tool add    ...
+    # tool edit ...
+    # tool delete ...
+    list_parser   = subparsers.add_parser('list',   help='List artifacts')
+    delete_parser = subparsers.add_parser('delete', help='Delete an artifact')
+    add_parser    = subparsers.add_parser('add',    help='Add an artifact')
+    edit_parser   = subparsers.add_parser('edit',   help='Edit an artifact')
+
+    # List parser options/args
+    list_parser.add_argument(
+        "query",
+        help="the query to execute",
+        type=int,
+        )
+
+    # Edit parser options/args
+    edit_parser.add_argument(
+        "id",
+        help="ID of the article",
+        type=int,
+        )
+    edit_parser.add_argument(
+        "-t", "--tags",
+        help="Tags to update in the form \"tag1;tag2;...;tagN\"",
+        default="",
+        type=str,
+        )
+    edit_parser.add_argument(
+        "-c", "--category",
+        help="Category to update",
+        default=None,
+        type=str,
+        )
+    edit_parser.add_argument(
+        "-n", "--name",
+        help="Name to update",
+        default=None,
+        type=str,
+        )
+    edit_parser.add_argument(
+        "-a", "--author",
+        help="Author to update",
+        default=None,
+        type=str,
+        )
+    edit_parser.add_argument(
+        "-s", "--status",
+        help="Status to update",
+        type=str,
+        )
+
+    # Add parser options/args
+    add_parser.add_argument(
+        "id",
+        help="ID of the article",
+        type=int,
+        )
+    add_parser.add_argument(
+        "-t", "--tags",
+        help="Tags to update in the form \"tag1;tag2;...;tagN\"",
+        default="",
+        type=str,
+        )
+    add_parser.add_argument(
+        "-c", "--category",
+        help="Category to update",
+        default=None,
+        type=str,
+        )
+    add_parser.add_argument(
+        "-n", "--name",
+        help="Name to update",
+        default=None,
+        type=str,
+        )
+    add_parser.add_argument(
+        "-a", "--author",
+        help="Author to update",
+        default=None,
+        type=str,
+        )
+    add_parser.add_argument(
+        "-s", "--status",
+        help="Status to update",
+        type=str,
+        )
+
+    add_parser.add_argument(
+        "-s", "--concurrency",
+        help="number of concurrent http requests",
+        default=20,
+        type=int,
+        )
+    add_parser.add_argument(
+        "-d", "--data",
+        help="data passed in the body, when set, the request will be a POSt",
+        action='append',
+        default=[],
+        type=str,
+        nargs='+',
+        )
+
+    # Delete parser options/args
+    delete_parser.add_argument(
+        "-H", "--header",
+        help="A header that will be passed within the requests",
+        action='append',
+        default=[],
+        type=str,
+        nargs='+',
+        )
+    edit_parser.add_argument(
+        "-H", "--header",
+        help="A header that will be passed within the requests",
+        action='append',
+        default=[],
+        type=str,
+        nargs='+',
+        )
+
+
+    return parser.parse_args(args)
+```
+
+
+### Creating mutually exclusive groups of options
+
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-a', action='store_true')
+group.add_argument('-b', action='store_true')
+
+print parser.parse_args()
+```
+
+## References
+
+https://pymotw.com/2/argparse/
