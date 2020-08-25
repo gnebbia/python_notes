@@ -1,6 +1,3 @@
-
-
-
 ## Get all methods available for an object
 
 ```python

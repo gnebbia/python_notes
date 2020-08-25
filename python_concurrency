@@ -24,3 +24,16 @@ https://realpython.com/python-concurrency/
 https://realpython.com/async-io-python/#the-10000-foot-view-of-async-io
 https://www.youtube.com/watch?v=2ZwuKeL0aHs&list=PLGKQkV4guDKEv1DoK4LYdo2ZPLo6cyLbm&index=1
 
+## Notes on GIL
+
+The GIL is a single lock on the interpreter itself which adds a rule
+that execution of any Python bytecode requires acquiring the interpreter
+lock. This prevents deadlocks (as there is only one lock) and doesn't
+introduce much performance overhead. But it effectively makes any
+CPU-bound Python program single-threaded.
+Basically the GIL affects only CPU-bound programs, as I/O bound programs
+can still be dealt with async or threading.
+
+The GIL (Global Interpreter Lock) is present the standard python
+implementation (i.e., CPython). The GIL prevents two threads from
+executing simultaneously in the same program.
